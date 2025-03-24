@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+*.sqlite3
+venv/
+.env
+
+# Node
+node_modules/
+build/
+dist/
+npm-debug.log
+yarn-error.log
+
+# VSCode
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
