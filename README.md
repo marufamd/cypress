@@ -1,9 +1,11 @@
 # Cypress
 
 ## Team Members
-- Jane Doe – 123456789
-- John Smith – 987654321
-...
+- Milad Safi
+- Maruf Ahmed
+- Labib Sarwar
+- Wesil Said
+- Sameeh Hasayen
 
 ## Project Overview
 Cypress is a progressive web application designed to modernize how Toronto citizens report and track street-related issues...
