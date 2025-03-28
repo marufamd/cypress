@@ -5,7 +5,7 @@ import { MenuIcon, XIcon } from 'lucide-vue-next';
 
 import { navItems } from '@/util/router';
 
-const navLinks = navItems.slice(0, -2);
+const navLinks = navItems.filter(n => Boolean(n.name) && !n.path.includes(':'));
 
 // Mobile menu state
 const mobileMenuOpen = ref(false);

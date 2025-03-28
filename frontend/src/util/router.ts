@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '@/views/HomeView.vue';
 import LoginView from '@/views/LoginView.vue';
 import RegisterView from '@/views/RegisterView.vue';
+import ReportView from '@/views/ReportView.vue';
+import ReportsView from '@/views/ReportsView.vue';
 
 export const navItems = [
   {
@@ -12,19 +14,24 @@ export const navItems = [
   {
     path: '/reports',
     name: 'Reports',
-    // route level code-splitting
-    // this generates a separate chunk (About.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import('../views/ReportsView.vue'),
+    component: ReportsView,
+  },
+  {
+    path: '/map',
+    name: 'Map',
+    component: () => import('@/views/MapView.vue')
+  },
+  {
+    path: '/reports/:id',
+    name: 'ReportView',
+    component: ReportView,
   },
   {
     path: '/login',
-    name: 'Login',
     component: LoginView,
   },
   {
     path: '/register',
-    name: 'Register',
     component: RegisterView,
   },
 ];

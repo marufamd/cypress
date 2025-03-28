@@ -21,7 +21,7 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <main class="mt-6 flex flex-col items-center justify-center bg-white p-4">
+  <main class="h-[90vh] mt-6 flex flex-col items-center justify-center bg-white p-4">
     <div class="w-full max-w-md space-y-8 rounded-lg bg-white p-6 shadow-lg sm:p-8">
       <div class="flex flex-col items-center justify-center">
         <h2 class="mt-2 text-center text-3xl font-bold tracking-tight text-gray-900">
