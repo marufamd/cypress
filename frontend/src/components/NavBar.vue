@@ -53,7 +53,7 @@ const mobileMenuOpen = ref(false);
               </RouterLink>
               <RouterLink
                 to="/register"
-                class="bg-white text-teal-700 hover:bg-teal-50 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                class="text-teal-700 bg-teal-50 hover:bg-teal-600 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
               >
                 Sign up
               </RouterLink>
@@ -64,7 +64,7 @@ const mobileMenuOpen = ref(false);
           <div class="flex items-center sm:hidden">
             <button
               @click="mobileMenuOpen = !mobileMenuOpen"
-              class="inline-flex items-center justify-center p-2 rounded-md text-teal-100 hover:text-white hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+              class="inline-flex items-center justify-center p-2 rounded-md text-teal-600 hover:text-white hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
             >
               <span class="sr-only">Open main menu</span>
               <MenuIcon v-if="!mobileMenuOpen" class="block h-6 w-6" />
@@ -85,7 +85,7 @@ const mobileMenuOpen = ref(false);
           :class="[
             $route.path === item.path
               ? 'bg-teal-800 text-white'
-              : 'text-teal-100 hover:bg-teal-600 hover:text-white',
+              : 'text-teal-800 hover:bg-teal-600 hover:text-white',
             'block px-3 py-2 rounded-md text-base font-medium transition-colors',
           ]"
           @click="mobileMenuOpen = false"
@@ -97,14 +97,14 @@ const mobileMenuOpen = ref(false);
         <div class="px-2 space-y-1">
           <RouterLink
             to="/login"
-            class="block px-3 py-2 rounded-md text-base font-medium text-teal-100 hover:bg-teal-600 hover:text-white transition-colors"
+            class="block px-3 py-2 rounded-md text-base font-medium text-teal-800 hover:bg-teal-600 hover:text-white transition-colors"
             @click="mobileMenuOpen = false"
           >
             Log in
           </RouterLink>
           <RouterLink
             to="/register"
-            class="block px-3 py-2 rounded-md text-base font-medium text-teal-100 hover:bg-teal-600 hover:text-white transition-colors"
+            class="block px-3 py-2 rounded-md text-base font-medium text-teal-800 hover:bg-teal-600 hover:text-white transition-colors"
             @click="mobileMenuOpen = false"
           >
             Sign up
