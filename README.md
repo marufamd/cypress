@@ -16,13 +16,13 @@ By enhancing accessibility, transparency, and efficiency, Cypress aims to foster
 
 
 ## Core Features
-● Progressive Web Application - Web app can be installed to act like a regular application.
-● User Authentication - Users may create an account and log in.
-● Report Issues - Users may submit reports with descriptions, locations, and images.
-● Track Status - Users may see the status of their reports (Pending, In Progress, Resolved).
-● Admin Dashboard - City officials can manage and moderate reports, changing their statuses.
-● Mapping Integration - Reports are displayed on an interactive city map with GIS support.
-● Notification System – Users receive updates when their reports change status or receive comments from city officials.
+- Progressive Web Application - Web app can be installed to act like a regular application.
+- User Authentication - Users may create an account and log in.
+- Report Issues - Users may submit reports with descriptions, locations, and images.
+- Track Status - Users may see the status of their reports (Pending, In Progress, Resolved).
+- Admin Dashboard - City officials can manage and moderate reports, changing their statuses.
+- Mapping Integration - Reports are displayed on an interactive city map with GIS support.
+- Notification System – Users receive updates when their reports change status or receive comments from city officials.
 
 
 ## Technology Stack
