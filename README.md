@@ -16,30 +16,28 @@ By enhancing accessibility, transparency, and efficiency, Cypress aims to foster
 
 
 ## Core Features
-- **Progressive Web App** – Installable, mobile-friendly experience.
-- **User Authentication** – Secure login and registration.
-- **Report Issues** - Users may submit reports with descriptions, locations, and images.
-- **Track Status** - Users may see the status of their reports (Pending, In Progress, Resolved).
-- **Admin Dashboard** - City officials can manage and moderate reports, changing their statuses.
-- **Mapping Integration** - Reports are displayed on an interactive city map with GIS support.
-- **Notification System** – Users receive updates when their reports change status or receive comments from city officials.
+● Progressive Web Application - Web app can be installed to act like a regular application.
+● User Authentication - Users may create an account and log in.
+● Report Issues - Users may submit reports with descriptions, locations, and images.
+● Track Status - Users may see the status of their reports (Pending, In Progress, Resolved).
+● Admin Dashboard - City officials can manage and moderate reports, changing their statuses.
+● Mapping Integration - Reports are displayed on an interactive city map with GIS support.
+● Notification System – Users receive updates when their reports change status or receive comments from city officials.
 
 
 ## Technology Stack
 
-### Frontend (React.js)
-- React.js (for UI development)
+### Frontend (Vue.js)
+- Vue.js (for UI development)
 - TailwindCSS (for UI components)
-- Pinia (for state management)
-- Google Maps API of GIS integration
-- JWT Authentication (for security)
+- Google Maps API (for GIS integration)
+- Supabase Auth (for Authentication)
 
 ### Backend (Python & FastAPI)
 - FastAPI (for handling API requests)
 - PostgreSQL (Database via Supabase)
 - JWT for authentication
-- Cloudinary / AWS S3 (for image storage)
-- WebSockets (for real-time updates)
+- AWS S3 (for image storage)
 - GIS Support (PostGIS for spatial queries)
 
 
@@ -57,27 +55,3 @@ By enhancing accessibility, transparency, and efficiency, Cypress aims to foster
 4. City officials update the issue status (Pending -> In Progress -> Resolved).
 5. Users receive notifications for updates.
 6. Users can track and view reports on an interactive GIS-enabled map.
-
-
-## Implementation Steps
-**1. Setup Backend (FastAPI & Python)**
-   - Create REST API endpoints for:
-   - User authentication (JWT-based)
-   - Create, update, delete reports
-   - Fetch reports based on location/status
-	- Implement authentication using JWT.
-	- Use Supabase storage for image uploads.
-
-**2. Build Frontend (React.js)**
-	- Create React components:
-   - Login/Register page
-   - Report form (title, description, location picker, image upload)
-   - Issue tracking dashboard
-   - Interactive GIS map (Google Maps API)
-
-**3. Deployment**
-	- Frontend: Deploy React app on Vercel or Firebase.
-   - Backend: Deploy FastAPI on AWS EC2
-   - Database: Use Supabase PostgreSQL 
-      (manage cloud database with PostGIS support)
-   - Storage: Use Supabase storage or AWS S3 for image hosting.
