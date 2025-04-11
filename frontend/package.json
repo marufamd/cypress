@@ -1,6 +1,6 @@
 {
   "name": "frontend",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -16,7 +16,10 @@
   },
   "dependencies": {
     "@formkit/vue": "^1.6.9",
+    "@supabase/supabase-js": "^2.49.4",
     "@tailwindcss/vite": "^4.0.16",
+    "@vue-leaflet/vue-leaflet": "^0.10.1",
+    "leaflet": "^1.9.4",
     "lucide-vue-next": "^0.484.0",
     "pinia": "^3.0.1",
     "tailwindcss": "^4.0.16",
@@ -27,6 +30,7 @@
     "@playwright/test": "^1.51.0",
     "@tsconfig/node22": "^22.0.0",
     "@types/jsdom": "^21.1.7",
+    "@types/leaflet": "^1.9.17",
     "@types/node": "^22.13.9",
     "@vitejs/plugin-vue": "^5.2.1",
     "@vitejs/plugin-vue-jsx": "^4.1.1",

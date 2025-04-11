@@ -1,21 +1,40 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { AlertCircle } from 'lucide-vue-next';
+import { supabase } from '@/util/supabase';
+import { useRouter } from 'vue-router';
 
 const isLoading = ref(false);
 const error = ref('');
+const success = ref(false);
 
-const handleSubmit = async () => {
+const handleSubmit = async (data: any) => {
   try {
-    // TODO: impl validation logic with Supabase
     isLoading.value = true;
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    console.log('Form submitted');
-    isLoading.value = false;
-  } catch (err) {
-    isLoading.value = false;
-    error.value = 'An error occurred during signup. Please try again.';
+    error.value = '';
+    success.value = false;
+
+    const { email, password, firstName, lastName } = data;
+
+    const { error: signUpError } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          first_name: firstName,
+          last_name: lastName,
+        },
+      },
+    });
+
+    if (signUpError) throw signUpError;
+
+    success.value = true;
+  } catch (err: any) {
+    error.value = err.message || 'An error occurred during signup. Please try again.';
     console.error(err);
+  } finally {
+    isLoading.value = false;
   }
 };
 </script>
@@ -29,12 +48,7 @@ const handleSubmit = async () => {
         </h2>
       </div>
 
-      <FormKit
-        type="form"
-        @submit="handleSubmit"
-        :actions="false"
-        :incomplete-message="false"
-      >
+      <FormKit type="form" @submit="handleSubmit" :actions="false" :incomplete-message="false">
         <div class="flex flex-col gap-6">
           <div v-if="error" class="p-4 border-l-4 border-red-500 bg-red-50 text-red-700">
             <div class="flex">
@@ -43,6 +57,17 @@ const handleSubmit = async () => {
               </div>
               <div class="ml-3">
                 <p class="text-sm">{{ error }}</p>
+              </div>
+            </div>
+          </div>
+
+          <div v-if="success" class="p-4 border-l-4 border-green-500 bg-green-50 text-green-700">
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <AlertCircle class="h-5 w-5 text-green-500" />
+              </div>
+              <div class="ml-3">
+                <p class="text-sm">Check your email to verify your account before logging in.</p>
               </div>
             </div>
           </div>
@@ -120,7 +145,7 @@ const handleSubmit = async () => {
           <button
             type="submit"
             class="cursor-pointer w-full rounded-md bg-teal-700 px-4 py-2 text-white hover:bg-teal-800 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 disabled:opacity-50"
-            :disabled="isLoading"
+            :disabled="isLoading || success"
           >
             {{ isLoading ? 'Creating account...' : 'Sign up' }}
           </button>

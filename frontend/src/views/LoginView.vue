@@ -1,25 +1,37 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { supabase } from '@/util/supabase'; // your Supabase client
 import { AlertCircle } from 'lucide-vue-next';
 
 const isLoading = ref(false);
 const error = ref('');
+const router = useRouter();
 
 const handleSubmit = async (data: any) => {
   try {
-    // TODO: impl login with supabase
     isLoading.value = true;
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    error.value = '';
 
-    console.log('Form submitted:', data);
-    isLoading.value = false;
-  } catch (err) {
-    isLoading.value = false;
-    error.value = 'An error occurred during login. Please try again.';
+    const { email, password } = data;
+
+    const { error: loginError } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (loginError) throw loginError;
+
+    router.push('/');
+  } catch (err: any) {
+    error.value = err.message || 'An error occurred during login. Please try again.';
     console.error(err);
+  } finally {
+    isLoading.value = false;
   }
 };
 </script>
+
 
 <template>
   <main class="h-screen mt-6 flex flex-col items-center justify-center bg-white p-4">

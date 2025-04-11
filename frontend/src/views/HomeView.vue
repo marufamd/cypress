@@ -101,21 +101,6 @@ import {
           <div class="flex items-start">
             <div class="flex-shrink-0 mt-1">
               <div class="w-10 h-10 bg-teal-100 rounded-full flex items-center justify-center">
-                <Smartphone class="h-5 w-5 text-teal-700" />
-              </div>
-            </div>
-            <div class="ml-4">
-              <h3 class="text-lg font-semibold mb-2">Progressive Web App</h3>
-              <p class="text-gray-600">
-                Install Cypress on your device for a seamless mobile experience, even with limited
-                connectivity.
-              </p>
-            </div>
-          </div>
-
-          <div class="flex items-start">
-            <div class="flex-shrink-0 mt-1">
-              <div class="w-10 h-10 bg-teal-100 rounded-full flex items-center justify-center">
                 <Map class="h-5 w-5 text-teal-700" />
               </div>
             </div>
@@ -138,21 +123,6 @@ import {
               <h3 class="text-lg font-semibold mb-2">Photo Evidence</h3>
               <p class="text-gray-600">
                 Submit photos with your reports to provide clear visual evidence of the issues.
-              </p>
-            </div>
-          </div>
-
-          <div class="flex items-start">
-            <div class="flex-shrink-0 mt-1">
-              <div class="w-10 h-10 bg-teal-100 rounded-full flex items-center justify-center">
-                <Bell class="h-5 w-5 text-teal-700" />
-              </div>
-            </div>
-            <div class="ml-4">
-              <h3 class="text-lg font-semibold mb-2">Notification System</h3>
-              <p class="text-gray-600">
-                Stay informed with real-time updates on your reports and responses from city
-                officials.
               </p>
             </div>
           </div>

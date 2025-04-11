@@ -1,14 +1,23 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { RouterLink } from 'vue-router';
-import { MenuIcon, XIcon } from 'lucide-vue-next';
+import { RouterLink, useRouter } from 'vue-router';
+import { LogOut, MenuIcon, User, XIcon } from 'lucide-vue-next';
 
 import { navItems } from '@/util/router';
+import { supabase } from '@/util/supabase';
+import { user } from '@/util/auth';
 
-const navLinks = navItems.filter(n => Boolean(n.name) && !n.path.includes(':'));
+const navLinks = navItems.filter((n) => !n.meta?.hidden);
 
-// Mobile menu state
 const mobileMenuOpen = ref(false);
+
+const router = useRouter();
+
+async function logout() {
+  await supabase.auth.signOut();
+  user.value = null;
+  router.push('/');
+}
 </script>
 
 <template>
@@ -45,18 +54,35 @@ const mobileMenuOpen = ref(false);
         <div class="flex items-center">
           <div class="hidden sm:flex sm:items-center sm:ml-6">
             <div class="flex items-center space-x-4">
-              <RouterLink
-                to="/login"
-                class="text-teal-800 hover:bg-teal-600 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
-              >
-                Log in
-              </RouterLink>
-              <RouterLink
-                to="/register"
-                class="text-teal-700 bg-teal-50 hover:bg-teal-600 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
-              >
-                Sign up
-              </RouterLink>
+              <template v-if="!user">
+                <RouterLink
+                  to="/login"
+                  class="text-teal-800 hover:bg-teal-600 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                >
+                  Log in
+                </RouterLink>
+                <RouterLink
+                  to="/register"
+                  class="text-teal-700 bg-teal-50 hover:bg-teal-600 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                >
+                  Sign up
+                </RouterLink>
+              </template>
+              <template v-else>
+                <div class="flex flex-row gap-2">
+                  <button class="flex items-center gap-1 text-sm font-semibold px-3 py-2 bg-gray-100 rounded-md">
+                    <User class="w-4 h-4" />
+                    {{ user.firstName }} {{ user.lastName }}
+                  </button>
+                  <button
+                    @click="logout"
+                    class="flex items-center gap-1 bg-red-100 text-red-600 hover:bg-red-600 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer"
+                  >
+                    <LogOut class="w-4 h-4" />
+                    Log out
+                  </button>
+                </div>
+              </template>
             </div>
           </div>
 
@@ -95,20 +121,38 @@ const mobileMenuOpen = ref(false);
       </div>
       <div class="pt-4 pb-3 border-t border-teal-800">
         <div class="px-2 space-y-1">
-          <RouterLink
-            to="/login"
-            class="block px-3 py-2 rounded-md text-base font-medium text-teal-800 hover:bg-teal-600 hover:text-white transition-colors"
-            @click="mobileMenuOpen = false"
-          >
-            Log in
-          </RouterLink>
-          <RouterLink
-            to="/register"
-            class="block px-3 py-2 rounded-md text-base font-medium text-teal-800 hover:bg-teal-600 hover:text-white transition-colors"
-            @click="mobileMenuOpen = false"
-          >
-            Sign up
-          </RouterLink>
+          <template v-if="!user">
+            <RouterLink
+              to="/login"
+              class="block px-3 py-2 rounded-md text-base font-medium text-teal-800 hover:bg-teal-600 hover:text-white transition-colors"
+              @click="mobileMenuOpen = false"
+            >
+              Log in
+            </RouterLink>
+            <RouterLink
+              to="/register"
+              class="block px-3 py-2 rounded-md text-base font-medium text-teal-800 hover:bg-teal-600 hover:text-white transition-colors"
+              @click="mobileMenuOpen = false"
+            >
+              Sign up
+            </RouterLink>
+          </template>
+          <template v-else>
+            <p class="px-3 py-2 text-base text-gray-700 font-medium">
+              {{ user?.firstName }} {{ user.lastName }}
+            </p>
+            <button
+              @click="
+                () => {
+                  logout();
+                  mobileMenuOpen = false;
+                }
+              "
+              class="block w-full text-left px-3 py-2 rounded-md text-base font-medium bg-red-100 text-red-600 hover:bg-red-600 hover:text-white transition-colors"
+            >
+              Log out
+            </button>
+          </template>
         </div>
       </div>
     </div>
