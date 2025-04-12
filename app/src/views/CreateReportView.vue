@@ -242,7 +242,7 @@ const submitReport = async () => {
       description: description.value,
       status: Status.Pending,
       priority: priority.value,
-      location: location.value.split(',')[0],
+      location: location.value.substring(0, 20),
       coordinates: markerLatLng.value!,
       reported_by: user.value?.firstName! + ' ' + user.value?.lastName!
     };

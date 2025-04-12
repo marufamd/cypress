@@ -102,6 +102,24 @@ export function useCreateReport() {
   return mutation;
 }
 
+export function useDeleteReport() {
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: async (reportId: string) => {
+      const { error } = await supabase.from('reports').delete().eq('id', reportId);
+      if (error) throw error;
+    },
+    onSuccess: (_data, reportId) => {
+      queryClient.invalidateQueries({ queryKey: ['reports'] });
+      queryClient.removeQueries({ queryKey: ['report', reportId] });
+      queryClient.removeQueries({ queryKey: ['comments', reportId] });
+    },
+  });
+
+  return mutation;
+}
+
 export function useComments(reportId: Ref<string | undefined>) {
   const query = useQuery({
     queryKey: ['comments', reportId],

@@ -168,7 +168,7 @@ const resetFilters = () => {
               <div class="flex flex-col md:flex-row md:items-start md:justify-between">
                 <div>
                   <div class="flex items-center">
-                    <h3 class="text-lg font-semibold text-gray-900">{{ report.type }}</h3>
+                    <h3 class="text-lg font-semibold text-gray-900">{{ report.title }}</h3>
                     <span
                       v-if="report.priority === 'high'"
                       class="ml-2 px-2 py-0.5 bg-red-100 text-red-800 text-xs font-medium rounded-full"

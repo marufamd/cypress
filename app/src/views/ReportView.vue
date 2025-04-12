@@ -13,11 +13,18 @@ import {
   Bell,
   Share2,
   Printer,
+  Trash,
 } from 'lucide-vue-next';
 import { formatDate, formatStatus, Status, timeAgo } from '@/util/util';
 import { LMap, LTileLayer, LMarker } from '@vue-leaflet/vue-leaflet';
 import 'leaflet/dist/leaflet.css';
-import { Priority, useComments, useCreateComment, useReport } from '@/util/queries';
+import {
+  Priority,
+  useComments,
+  useCreateComment,
+  useDeleteReport,
+  useReport,
+} from '@/util/queries';
 import { user } from '@/util/auth';
 
 const router = useRouter();
@@ -25,6 +32,7 @@ const route = useRoute();
 
 const reportId = computed(() => route.params.id as string);
 const { report, isLoading } = useReport(reportId);
+const { mutateAsync: deleteReport } = useDeleteReport();
 const { comments } = useComments(reportId);
 const { mutateAsync: createComment } = useCreateComment();
 
@@ -49,6 +57,21 @@ const addComment = async () => {
     newComment.value = '';
   } catch (error) {
     console.error('Failed to post comment:', error);
+  }
+};
+
+const handleDelete = async () => {
+  if (!report.value?.id) return;
+
+  const confirmed = confirm('Are you sure you want to delete this report?');
+  if (!confirmed) return;
+
+  try {
+    await deleteReport(report.value.id);
+    router.push('/reports');
+  } catch (error) {
+    console.error('Failed to delete report:', error);
+    alert('Failed to delete report.');
   }
 };
 
@@ -80,7 +103,7 @@ const goBack = () => {
                 {{ formatStatus(report?.status as Status) }}
               </span>
             </h1>
-            <p class="mt-1 text-teal-100">{{ report?.type }} Issue</p>
+            <p class="mt-1 text-teal-100 capitalize">{{ report?.type }} Issue</p>
           </div>
         </div>
       </div>
@@ -135,7 +158,11 @@ const goBack = () => {
                           'bg-blue-100 text-blue-800': report?.priority === Priority.Low,
                         }"
                       >
-                        {{ report?.priority ? report.priority.charAt(0).toUpperCase() + report.priority.slice(1) : '' }}
+                        {{
+                          report?.priority
+                            ? report.priority.charAt(0).toUpperCase() + report.priority.slice(1)
+                            : ''
+                        }}
                       </span>
                     </p>
                   </div>
@@ -356,8 +383,7 @@ const goBack = () => {
                         <div class="text-sm">
                           <span class="font-medium text-gray-900">Closed</span>
                         </div>
-                        <p class="mt-0.5 text-sm text-gray-500">
-                        </p>
+                        <p class="mt-0.5 text-sm text-gray-500"></p>
                       </div>
                     </div>
                   </div>
@@ -383,6 +409,15 @@ const goBack = () => {
                 >
                   <Printer class="h-4 w-4 mr-2" />
                   Print Report
+                </button>
+
+                <button
+                  v-if="report?.user_id === user?.id"
+                  @click="handleDelete"
+                  class="w-full flex items-center justify-center px-4 py-2 border transition-all cursor-pointer border-red-300 rounded-md shadow-sm text-sm font-medium text-red-700 bg-white hover:bg-red-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                >
+                  <Trash class="h-4 w-4 mr-2" />
+                  Delete Report
                 </button>
               </div>
             </div>
