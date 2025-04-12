@@ -65,7 +65,7 @@ export function useReports() {
 
 export function useReport(reportId: Ref<string | undefined>) {
   const query = useQuery<Report>({
-    queryKey: ['report', reportId],
+    queryKey: ['reports', reportId],
     queryFn: async () => {
       if (!reportId.value) throw new Error('Report ID is required');
       const { data, error } = await supabase
@@ -101,6 +101,27 @@ export function useCreateReport() {
 
   return mutation;
 }
+
+export function useUpdateReport() {
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: async (update: { id: string; changes: Partial<Report> }) => {
+      const { error } = await supabase
+        .from('reports')
+        .update(update.changes)
+        .eq('id', update.id);
+
+      if (error) throw error;
+    },
+    onSuccess: (_data, { id }) => {
+      queryClient.invalidateQueries({ queryKey: ['reports'] });
+    },
+  });
+
+  return mutation;
+}
+
 
 export function useDeleteReport() {
   const queryClient = useQueryClient();

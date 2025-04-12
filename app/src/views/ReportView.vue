@@ -24,6 +24,7 @@ import {
   useCreateComment,
   useDeleteReport,
   useReport,
+  useUpdateReport,
 } from '@/util/queries';
 import { user } from '@/util/auth';
 
@@ -33,6 +34,7 @@ const route = useRoute();
 const reportId = computed(() => route.params.id as string);
 const { report, isLoading } = useReport(reportId);
 const { mutateAsync: deleteReport } = useDeleteReport();
+const { mutateAsync: updateReport } = useUpdateReport();
 const { comments } = useComments(reportId);
 const { mutateAsync: createComment } = useCreateComment();
 
@@ -72,6 +74,24 @@ const handleDelete = async () => {
   } catch (error) {
     console.error('Failed to delete report:', error);
     alert('Failed to delete report.');
+  }
+};
+
+const handleResolve = async () => {
+  if (!report.value?.id) return;
+  try {
+    await updateReport({ id: report.value.id, changes: { status: Status.Resolved } });
+  } catch (error) {
+    console.error('Failed to resolve report:', error);
+  }
+};
+
+const handleClose = async () => {
+  if (!report.value?.id) return;
+  try {
+    await updateReport({ id: report.value.id, changes: { status: Status.Closed } });
+  } catch (error) {
+    console.error('Failed to close report:', error);
   }
 };
 
@@ -412,12 +432,30 @@ const goBack = () => {
                 </button>
 
                 <button
-                  v-if="report?.user_id === user?.id"
+                  v-if="report?.user_id === user?.id || user?.admin"
                   @click="handleDelete"
-                  class="w-full flex items-center justify-center px-4 py-2 border transition-all cursor-pointer border-red-300 rounded-md shadow-sm text-sm font-medium text-red-700 bg-white hover:bg-red-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                  class="w-full flex items-center justify-center px-4 py-2 border transition-all cursor-pointer border-red-300 rounded-md shadow-sm text-sm font-medium text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                 >
                   <Trash class="h-4 w-4 mr-2" />
                   Delete Report
+                </button>
+
+                <button
+                  v-if="user?.admin"
+                  @click="handleResolve"
+                  class="w-full flex items-center justify-center px-4 py-2 border transition-all cursor-pointer border-blue-300 rounded-md shadow-sm text-sm font-medium text-blue-700 bg-white hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                >
+                  <CheckCircle class="h-4 w-4 mr-2" />
+                  Resolve Report
+                </button>
+
+                <button
+                  v-if="user?.admin"
+                  @click="handleClose"
+                  class="w-full flex items-center justify-center px-4 py-2 border transition-all cursor-pointer border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                >
+                  <Archive class="h-4 w-4 mr-2" />
+                  Close Report
                 </button>
               </div>
             </div>
