@@ -5,8 +5,8 @@ export enum Status {
   Closed = 'closed',
 }
 
-export const formatDate = (dateString: string | Date) => {
-  const date = new Date(dateString)
+export const formatDate = (dateString?: string | Date) => {
+  const date = new Date(dateString ?? Date.now())
   return new Intl.DateTimeFormat('en-US', { 
     year: 'numeric', 
     month: 'short', 
@@ -31,8 +31,8 @@ export const formatStatus = (status: Status) => {
   }
 }
 
-export const timeAgo = (dateString: string) => {
-  const date = new Date(dateString)
+export const timeAgo = (dateString?: string) => {
+  const date = new Date(dateString ?? Date.now());
   const now = new Date()
   const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000)
   

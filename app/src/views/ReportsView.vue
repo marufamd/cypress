@@ -14,141 +14,9 @@ import {
   Plus,
 } from 'lucide-vue-next';
 import { Status, formatDate, formatStatus } from '@/util/util';
+import { useReports } from '@/util/queries';
 
-// TODO: replace with Supabase data
-const reports = [
-  {
-    id: '1',
-    type: 'Pothole',
-    description: 'Large pothole in the middle of the road causing traffic hazards.',
-    status: 'pending',
-    priority: 'high',
-    location: 'King St W & Spadina Ave',
-    coordinates: { lat: 43.6441, lng: -79.3957 },
-    dateSubmitted: '2023-10-15T14:32:00Z',
-    reportedBy: 'John Smith',
-    imageUrl: 'https://placeholder.svg?height=300&width=300&text=Pothole',
-    comments: [
-      {
-        id: '1',
-        user: 'City Official',
-        text: 'We have received your report and will investigate.',
-        date: '2023-10-16T09:15:00Z',
-      },
-    ],
-  },
-  {
-    id: '2',
-    type: 'Streetlight',
-    description: 'Streetlight not working for the past week, creating safety concerns at night.',
-    status: 'in-progress',
-    priority: 'medium',
-    location: 'Queen St E & Broadview Ave',
-    coordinates: { lat: 43.6598, lng: -79.3485 },
-    dateSubmitted: '2023-10-12T18:45:00Z',
-    reportedBy: 'Sarah Johnson',
-    imageUrl: 'https://placeholder.svg?height=300&width=300&text=Streetlight',
-    comments: [
-      {
-        id: '1',
-        user: 'City Official',
-        text: 'Maintenance crew has been dispatched.',
-        date: '2023-10-13T11:20:00Z',
-      },
-      {
-        id: '2',
-        user: 'Sarah Johnson',
-        text: 'Thank you for the quick response!',
-        date: '2023-10-13T12:05:00Z',
-      },
-    ],
-  },
-  {
-    id: '3',
-    type: 'Graffiti',
-    description: 'Offensive graffiti on public building wall needs to be removed.',
-    status: 'resolved',
-    priority: 'low',
-    location: 'Bloor St W & Bathurst St',
-    coordinates: { lat: 43.6666, lng: -79.4111 },
-    dateSubmitted: '2023-10-08T10:20:00Z',
-    reportedBy: 'Michael Chen',
-    imageUrl: 'https://placeholder.svg?height=300&width=300&text=Graffiti',
-    comments: [
-      {
-        id: '1',
-        user: 'City Official',
-        text: 'Cleanup crew scheduled for tomorrow.',
-        date: '2023-10-09T08:30:00Z',
-      },
-      {
-        id: '2',
-        user: 'City Official',
-        text: 'Graffiti has been removed.',
-        date: '2023-10-10T16:45:00Z',
-      },
-    ],
-  },
-  {
-    id: '4',
-    type: 'Sidewalk',
-    description: 'Cracked and uneven sidewalk creating tripping hazard for pedestrians.',
-    status: 'in-progress',
-    priority: 'medium',
-    location: 'Yonge St & Eglinton Ave',
-    coordinates: { lat: 43.7076, lng: -79.3996 },
-    dateSubmitted: '2023-10-14T09:10:00Z',
-    reportedBy: 'Emily Rodriguez',
-    imageUrl: 'https://placeholder.svg?height=300&width=300&text=Sidewalk',
-    comments: [
-      {
-        id: '1',
-        user: 'City Official',
-        text: 'Assessment completed. Repair scheduled for next week.',
-        date: '2023-10-16T14:20:00Z',
-      },
-    ],
-  },
-  {
-    id: '5',
-    type: 'Road Damage',
-    description: 'Large crack across the entire road width causing vehicle damage.',
-    status: 'pending',
-    priority: 'high',
-    location: 'Danforth Ave & Pape Ave',
-    coordinates: { lat: 43.6784, lng: -79.3443 },
-    dateSubmitted: '2023-10-16T11:05:00Z',
-    reportedBy: 'David Wilson',
-    imageUrl: 'https://placeholder.svg?height=300&width=300&text=Road+Damage',
-    comments: [],
-  },
-  {
-    id: '6',
-    type: 'Other',
-    description: 'Abandoned shopping carts blocking the bike lane.',
-    status: 'closed',
-    priority: 'low',
-    location: 'College St & Ossington Ave',
-    coordinates: { lat: 43.6544, lng: -79.4244 },
-    dateSubmitted: '2023-10-05T15:30:00Z',
-    reportedBy: 'Lisa Patel',
-    imageUrl: 'https://placeholder.svg?height=300&width=300&text=Other',
-    comments: [
-      {
-        id: '1',
-        user: 'City Official',
-        text: 'This is not under city jurisdiction. Please contact the store directly.',
-        date: '2023-10-06T10:15:00Z',
-      },
-      {
-        id: '2',
-        user: 'Lisa Patel',
-        text: 'I understand, thank you for the information.',
-        date: '2023-10-06T11:30:00Z',
-      },
-    ],
-  },
-];
+const { reports } = useReports();
 
 // Filter states
 const searchQuery = ref('');
@@ -156,7 +24,7 @@ const statusFilter = ref('all');
 const typeFilter = ref('all');
 
 const filteredReports = computed(() => {
-  return reports.filter((report) => {
+  return reports.value.filter((report) => {
     if (statusFilter.value !== 'all' && report.status !== statusFilter.value) {
       return false;
     }
@@ -174,7 +42,7 @@ const filteredReports = computed(() => {
         report.type.toLowerCase().includes(query) ||
         report.description.toLowerCase().includes(query) ||
         report.location.toLowerCase().includes(query) ||
-        report.reportedBy.toLowerCase().includes(query)
+        report.reported_by.toLowerCase().includes(query)
       );
     }
 
@@ -279,17 +147,17 @@ const resetFilters = () => {
           <div class="flex flex-col md:flex-row">
             <div class="md:w-48 h-48 md:h-auto flex-shrink-0 bg-gray-200 relative">
               <img
-                :src="report.imageUrl"
+                :src="report.image_url ?? '@/assets/thumbnail.png'"
                 :alt="`Image of ${report.type}`"
                 class="w-full h-full object-cover"
               />
               <div
                 class="absolute top-2 left-2 px-2 py-1 rounded-full text-xs font-medium"
                 :class="{
-                  'bg-yellow-100 text-yellow-800': report.status === 'pending',
-                  'bg-blue-100 text-blue-800': report.status === 'in-progress',
-                  'bg-green-100 text-green-800': report.status === 'resolved',
-                  'bg-gray-100 text-gray-800': report.status === 'closed',
+                  'bg-yellow-100 text-yellow-800': report.status === Status.Pending,
+                  'bg-blue-100 text-blue-800': report.status === Status.InProgress,
+                  'bg-green-100 text-green-800': report.status === Status.Resolved,
+                  'bg-gray-100 text-gray-800': report.status === Status.Closed,
                 }"
               >
                 {{ formatStatus(report.status as Status) }}
@@ -313,7 +181,7 @@ const resetFilters = () => {
                 <div class="mt-2 md:mt-0 text-sm text-gray-500">
                   <div class="flex items-center">
                     <Calendar class="h-4 w-4 mr-1" />
-                    <span>{{ formatDate(report.dateSubmitted) }}</span>
+                    <span>{{ formatDate(report.date_submitted) }}</span>
                   </div>
                   <div class="flex items-center mt-1">
                     <MapPin class="h-4 w-4 mr-1" />
@@ -325,7 +193,7 @@ const resetFilters = () => {
               <div class="mt-4 flex flex-wrap items-center justify-between">
                 <div class="flex items-center text-sm text-gray-500">
                   <User class="h-4 w-4 mr-1" />
-                  <span>Reported by: {{ report.reportedBy }}</span>
+                  <span>Reported by: {{ report.reported_by }}</span>
                 </div>
 
                 <div class="mt-2 sm:mt-0 flex space-x-2">
@@ -334,8 +202,8 @@ const resetFilters = () => {
                   >
                     <MessageSquare class="h-4 w-4 mr-1" />
                     <span
-                      >{{ report.comments.length }}
-                      {{ report.comments.length === 1 ? 'Comment' : 'Comments' }}</span
+                      >{{ report.comment_count }}
+                      {{ report.comment_count === 1 ? 'Comment' : 'Comments' }}</span
                     >
                   </button>
 
@@ -365,13 +233,6 @@ const resetFilters = () => {
         >
           Reset Filters
         </button>
-        <RouterLink
-          :to="'/reports/create'"
-          class="inline-flex items-center px-3 py-1.5 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
-        >
-          <Plus class="h-4 w-4 mr-1" />
-          <span>View Report</span>
-        </RouterLink>
       </div>
 
       <div v-if="filteredReports.length > 0" class="mt-6 flex items-center justify-between">
