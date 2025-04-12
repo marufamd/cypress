@@ -6,6 +6,7 @@ interface UserData {
   email: string;
   firstName?: string;
   lastName?: string;
+  admin: boolean;
 };
 
 export const user = ref<UserData | null>(null);
@@ -24,19 +25,16 @@ export async function fetchUser() {
 
   const { data: profile, error } = await supabase
     .from('profiles')
-    .select('first_name, last_name')
+    .select('first_name, last_name, admin')
     .eq('id', baseUser.id)
     .maybeSingle();
-
-    console.log('details:', baseUser.id);
-    console.log('profile:', profile);
-    console.log('error:', error);
 
   user.value = {
     id: baseUser.id,
     email: baseUser.email!,
     firstName: profile?.first_name,
     lastName: profile?.last_name,
+    admin: profile?.admin ?? false
   };
 }
 
